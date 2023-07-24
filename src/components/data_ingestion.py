@@ -19,7 +19,7 @@ class DataIngestionConfig:
 
 ## Create a class for data ingestion
 class DataIngestion:
-    def __init__(self) -> None:
+    def __init__(self):
         self.ingestion_config = DataIngestionConfig()
 
     def initiate_data_ingestion(self):
@@ -27,6 +27,11 @@ class DataIngestion:
         try:
             df =pd.read_csv(os.path.join('notebooks/data','clean_finalTrain.csv'))
             logging.info('Dataset was read to pandas')
+
+            columns = df.columns.tolist()
+            columns.remove('Time_taken (min)')
+            columns.append('Time_taken (min)')
+            df= df[columns]
 
             os.makedirs(os.path.dirname(self.ingestion_config.raw_data_path),exist_ok=True)
             df.to_csv(self.ingestion_config.raw_data_path,index=False)
@@ -51,6 +56,6 @@ class DataIngestion:
             logging.info('Exception found at Data Ingestion stage')
             raise CustomException(e,sys)
 
-# if __name__ == '__main__':
-#     obj=DataIngestion()
-#     train_data_path,test_data_path = obj.initiate_data_ingestion()
+if __name__ == '__main__':
+    obj=DataIngestion()
+    train_data_path,test_data_path = obj.initiate_data_ingestion()
