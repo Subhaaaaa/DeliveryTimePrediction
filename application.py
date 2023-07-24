@@ -17,15 +17,23 @@ def predict_datapoint():
     
     else:
         data=CustomData(
-            carat=float(request.form.get('carat')),
-            depth = float(request.form.get('depth')),
-            table = float(request.form.get('table')),
-            x = float(request.form.get('x')),
-            y = float(request.form.get('y')),
-            z = float(request.form.get('z')),
-            cut = request.form.get('cut'),
-            color= request.form.get('color'),
-            clarity = request.form.get('clarity')
+            Delivery_person_Age=float(request.form.get('Delivery_person_Age')),
+            Delivery_person_Ratings = float(request.form.get('Delivery_person_Ratings')),
+            Weather_conditions = request.form.get('Weather_conditions'),
+            Road_traffic_density = request.form.get('Road_traffic_density'),
+            Vehicle_condition = int(request.form.get('Vehicle_condition')),
+            Type_of_vehicle = request.form.get('Type_of_vehicle'),
+            multiple_deliveries = float(request.form.get('multiple_deliveries')),
+            Festival= request.form.get('Festival'),
+            City = request.form.get('City'),
+            Ordered_Date_Year= int(request.form.get('Ordered_Date_Year')),
+            Ordered_Date_Month = int(request.form.get('Ordered_Date_Month')),
+            Ordered_Date_Day= int(request.form.get('Ordered_Date_Day')),
+            Time_OrderPicked_hours = int(request.form.get('Time_OrderPicked_hours')),
+            Time_OrderPicked_mins= int(request.form.get('Time_OrderPicked_mins')),
+            Time_Orderd_hours = int(request.form.get('Time_Orderd_hours')),
+            Time_Orderd_mins= int(request.form.get('Time_Orderd_mins')),
+            Distance_covered = float(request.form.get('Distance_covered'))
         )
         final_new_data=data.get_data_as_dataframe()
         predict_pipeline=PredictPipeline()
