@@ -49,22 +49,22 @@ class CustomData:
                 Distance_covered:float
                 ):
         
-        self.Delivery_person_Age = Delivery_person_Age,
-        self.Delivery_person_Ratings = Delivery_person_Ratings,
-        self.Weather_conditions = Weather_conditions,
-        self.Road_traffic_density = Road_traffic_density,
-        self.Vehicle_condition  = Vehicle_condition,
-        self.Type_of_vehicle = Type_of_vehicle,
-        self.multiple_deliveries = multiple_deliveries,
-        self.Festival = Festival,
-        self.City = City,
-        self.Ordered_Date_Year  = Ordered_Date_Year,
-        self.Ordered_Date_Month  = Ordered_Date_Month,
-        self.Ordered_Date_Day  = Ordered_Date_Day,
-        self.Time_OrderPicked_hours  = Time_OrderPicked_hours,
-        self.Time_OrderPicked_mins  = Time_OrderPicked_mins,
-        self.Time_Orderd_hours  = Time_Orderd_hours,
-        self.Time_Orderd_mins = Time_Orderd_mins,
+        self.Delivery_person_Age = Delivery_person_Age
+        self.Delivery_person_Ratings = Delivery_person_Ratings
+        self.Weather_conditions = Weather_conditions
+        self.Road_traffic_density = Road_traffic_density
+        self.Vehicle_condition  = Vehicle_condition
+        self.Type_of_vehicle = Type_of_vehicle
+        self.multiple_deliveries = multiple_deliveries
+        self.Festival = Festival
+        self.City = City
+        self.Ordered_Date_Year  = Ordered_Date_Year
+        self.Ordered_Date_Month  = Ordered_Date_Month
+        self.Ordered_Date_Day  = Ordered_Date_Day
+        self.Time_OrderPicked_hours  = Time_OrderPicked_hours
+        self.Time_OrderPicked_mins  = Time_OrderPicked_mins
+        self.Time_Orderd_hours  = Time_Orderd_hours
+        self.Time_Orderd_mins = Time_Orderd_mins
         self.Distance_covered = Distance_covered
 
     def get_data_as_dataframe(self):
