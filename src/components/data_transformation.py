@@ -12,6 +12,7 @@ from src.exception import CustomException
 from src.logger import logging
 import os
 from src.utils import save_object
+from src.components.data_ingestion import  DataIngestion
 
 @dataclass
 class DataTransformationConfig:
@@ -25,9 +26,12 @@ class DataTransformation:
         try:
             logging.info("Data transformation initiated")
 
-            df = pd.read_csv(os.path.join('notebooks/data','clean_finalTrain.csv'))
+            df = pd.read_csv(os.path.join('artifacts','raw.csv'))
+            target_column_name = 'Time_taken (min)'  
+            df = df.drop(columns=target_column_name,axis=1)
 
             numerical_columns = df.select_dtypes(exclude='object').columns
+
             categorical_columns = df.select_dtypes(include='object').columns
 
             # Custom ranking variables
@@ -64,7 +68,6 @@ class DataTransformation:
             ])
 
             return preprocessor
-
         except Exception as e:
             logging.info('Error in data transformation')
             raise CustomException(e,sys)
@@ -74,7 +77,9 @@ class DataTransformation:
         try:
                 # Reading train and test data 
                 train_df = pd.read_csv(train_path)
-                test_df = pd.read_csv(test_path)
+                #print('Train df head',train_df.head().to_string())
+                test_df =  pd.read_csv(test_path)
+                #print('Train df head',train_df.head().to_string())
 
                 logging.info('Reading of train and test data completed')
                 logging.info(f'Train data head : \n{train_df.head().to_string()}')
@@ -83,19 +88,23 @@ class DataTransformation:
                 logging.info('Obtaining preprocessing object')
 
                 preprocessor_obj = self.get_data_transformation_object()  
+                
                 target_column_name = 'Time_taken (min)'  
-
+              
                 ## Independent / dependent features wrt training
                 input_feature_train_df = train_df.drop(columns=target_column_name,axis=1)
+                
                 target_feature_train_df = train_df[target_column_name]
-
+                
                 ## Independent / dependent features wrt testing
                 input_feature_test_df = test_df.drop(columns=target_column_name,axis=1)
                 target_feature_test_df = test_df[target_column_name]
 
                 ## Transforming using preprocessor object 
                 ## The preprocessor object is initialised with the transformer name , the pipeline it should use and also the names of the respective columns that the pipelin eshould process 
+                
                 input_feature_train_arr = preprocessor_obj.fit_transform(input_feature_train_df)
+                
                 input_feature_test_arr = preprocessor_obj.transform(input_feature_test_df)
 
                 logging.info("Applying preprocessing object on training and testing datasets.")
@@ -117,9 +126,18 @@ class DataTransformation:
                     test_arr,
                     self.data_transformation_config.preprocessor_obj_file_path
                 )
-
         except Exception as e:
             logging.info('Exception occured at initiating data transformation')
             raise CustomException(e,sys)
+        
+if __name__ == '__main__':
 
-            
+    obj = DataIngestion()
+    train_path,test_path = obj.initiate_data_ingestion()
+
+    obj2 = DataTransformation()
+    train_arr,test_arr, object  = obj2.initiate_data_transformation(train_path,test_path)
+
+    obj3= ModelTrainer()
+    obj3.initiate_model_training(train_arr,test_arr)
+
