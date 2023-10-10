@@ -2,6 +2,8 @@
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression,ElasticNet
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
 from src.exception import CustomException
 from src.logger import logging
 from xgboost import XGBRegressor
@@ -40,8 +42,8 @@ class ModelTrainer:
             models = {
                 'XGBoost_1': XGBRegressor(n_estimators=100, learning_rate=0.1, max_depth=3),  # Modify hyperparameters
                 'XGBoost_2': XGBRegressor(n_estimators=200, learning_rate=0.05, max_depth=5),  # Modify hyperparameters
-                'LightGBM_1': LGBMRegressor(n_estimators=100, learning_rate=0.1, max_depth=3),  # Modify hyperparameters
-                'LightGBM_2': LGBMRegressor(n_estimators=200, learning_rate=0.05, max_depth=5),  # Modify hyperparameters
+                'LightGBM_1': LGBMRegressor(n_estimators=100, learning_rate=0.1, max_depth=9, num_leaves=31),  # Modify hyperparameters
+                'LightGBM_2': LGBMRegressor(n_estimators=200, learning_rate=0.05, max_depth=6, num_leaves=31),  # Modify hyperparameters
             }
 
             # models={
@@ -52,24 +54,20 @@ class ModelTrainer:
             # }
 
             stacked_model = StackingRegressor(
-            estimators=[(name, model) for name, model in models.items()],
-            final_estimator=LinearRegression()  # You can choose a different meta-estimator if needed
+            estimators= [(name, model) for name, model in models.items()],
+            final_estimator= SVR()  # You can choose a different meta-estimator if needed
             )
 
-            stacked_model.fit(X_train, y_train)  # Train the stacked model
+            stacked_model.fit(X_train, y_train) # Train the stacked model
             y_test_pred = stacked_model.predict(X_test)  # Predict on the test data
             r2_score_result = r2_score(y_test, y_test_pred)  # Calculate the R2 score
 
             # Print or use r2_score_result as needed
             print("R2 Score:", r2_score_result)
 
-
-
-
             # model_report = evaluate_model(X_train,y_train,X_test,y_test,stacked_model)#models
 
             # print(model_report)
-
 
             # print('\n====================================================================================\n')
             # logging.info(f'Model Report : {model_report}')
